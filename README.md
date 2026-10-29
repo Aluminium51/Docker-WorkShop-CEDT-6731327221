@@ -5,8 +5,9 @@ web app backed by Postgres**, orchestrate it with **docker-compose**, and wire
 up a **GitHub Actions CI pipeline** that builds your image, scans it with
 **Trivy** (Image Scanning tools), and pushes it to **Docker Hub**.
 
-The app code under `app/` is **complete**. Your job is to fill in the
-`#TODO(...)` markers in the infrastructure files. Every TODO maps to a
+The app source under `app/` is **complete**. The lockfile includes a security
+update for `proxy-addr` to satisfy the current Trivy check. Your job is to fill
+in the `#TODO(...)` markers in the infrastructure files. Every TODO maps to a
 checklist item in the Self-Verification section below — tick them off as you go.
 
 ---
@@ -47,7 +48,7 @@ Open `app/src/index.js`. Notice the three routes:
 - `GET /health` → 200 if it can reach Postgres, 503 otherwise (the Dockerfile HEALTHCHECK hits this)
 - `GET /tasks` → list from the `tasks` table, seeded by `app/db/init.sql`
 
-You will **not** modify any file under `app/`.
+You will **not** modify application source files under `app/`.
 
 ### Step 3 — `.dockerignore`
 
@@ -63,7 +64,7 @@ Should print three matching lines.
 
 Open `Dockerfile` and complete `TODO(step-4a)` through `TODO(step-4g)` (7 markers).
 Pay special attention to **step-4f** — the HEALTHCHECK uses a **Node one-liner**
-because `node:20.11-slim` does **not** include `curl` or `wget`.
+because `node:24.22.2-slim` does **not** include `curl` or `wget`.
 
 ### Step 5 — docker-compose.yml
 
@@ -122,7 +123,7 @@ When `build-scan-push` goes green, your image is live on Docker Hub at
 ├── .github/workflows/ci.yml     # 5 TODOs (step-6a..e)
 └── app/
     ├── package.json             # complete — do not edit
-    ├── package-lock.json        # complete — do not edit
+    ├── package-lock.json        # complete, includes the proxy-addr security update
     ├── db/init.sql              # complete — do not edit
     └── src/
         ├── index.js             # complete — do not edit
